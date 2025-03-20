@@ -1,9 +1,10 @@
 clearvars
 clc
-
+%%
+rng(42);
 addpath("utils") % add util functions
 
-N = 5; % sample size
+N = 100; % sample size
 beta = [1, 2, 1,-1]; % beta coefs.
 sigma_e = [1, 2, 10]; % variance for U
 
@@ -30,11 +31,28 @@ for j=1:length(sigma_e)
 end
 
 [beta_estimates, ptiles] = sort_percentile(beta_estimates);
-
-
-
+%% PLOT
+figure;
+for j = 1:4  % j=1 corresponde a β0, j=2 a β1, etc.
+    subplot(2,2,j);
+    hold on;
+    % Se calcula la densidad de los estimadores para cada valor de sigma² usando myKSDensity
+    for s = 1:length(sigma_e)
+        data = beta_estimates(s, :, j);
+        [xi, f] = kde(data);
+        plot(xi, f, 'LineWidth', 2, 'DisplayName', sprintf('\\sigma^2 = %g', sigma_e(s)));
+    end
+    % Línea vertical que indica el valor verdadero del parámetro
+    xline(beta(j), '--r', 'LineWidth', 1, 'DisplayName', 'Valor verdadero');
+    title(sprintf('Densidad de \\beta_{%d}', j-1));
+    xlabel('Valor estimado');
+    ylabel('Densidad');
+    legend('show');
+    hold off;
+end
 %% Plot histograms for each sigma_e
 figure;
+subtitle(sprintf('Distribución de estimadores (N = %d) para distintos \\sigma^2_{\\epsilon}', N));
 for j = 1:length(sigma_e)
     for k = 1:length(beta)
         subplot(length(sigma_e), length(beta), (j-1)*length(beta) + k);
