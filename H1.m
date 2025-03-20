@@ -22,12 +22,16 @@ for j=1:length(sigma_e)
         
         % Beta parameter
         %beta_hat = inv(X'*X)*X'Y % inneficient
-        %beta_hat = (X'*X) \ (X'*Y);
-        beta_hat = X \ Y; % more efficient
+        %beta_hat = (X'*X) \ (X'*Y); % better but not enough
+        beta_hat = X \ Y; % best
     
         beta_estimates(j, i, :) = beta_hat;
     end
 end
+
+[beta_estimates, ptiles] = sort_percentile(beta_estimates);
+
+
 
 %% Plot histograms for each sigma_e
 figure;
