@@ -15,12 +15,12 @@ function printpercentile(percentiles, tag, target)
         disp(T);
     end
 
-    param_labels = {'\beta_0', '\beta_1', '\beta_2', '\beta_3'};
+    param_labels = {'$\\\beta_0$', '$\\\beta_1$', '$\\\beta_2$', '$\\\beta_3$'};
     % Create figure
-    figure('Position', [100, 100, 600, 400]);
+    figure('Units','inches', 'Position', [0 0 10 2]);
     % Plot for each parameter
     for param_idx = 1:length(beta_labels)
-        subplot(2, 2, param_idx);
+        subplot(1, 4, param_idx);
         hold on;
         
         % Extract data for current parameter
@@ -50,8 +50,8 @@ function printpercentile(percentiles, tag, target)
 
     sgtitle('Percentiles 5-95', 'Interpreter', 'latex');
     set(gcf, 'PaperUnits', 'inches');
-    set(gcf, 'PaperSize', [6, 5]); % Set paper size larger than figure
-    set(gcf, 'PaperPosition', [0., 0., 6, 5]); % Add 
+    set(gcf, 'PaperSize', [9, 3]); % Set paper size larger than figure
+    set(gcf, 'PaperPosition', [0., 0., 9, 3]); % Add 
     print(gcf, '-dpdf', target);
 end
 

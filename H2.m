@@ -36,7 +36,15 @@ printpercentile(ptiles, ["N=50", "N=100", "N=500"], ...
     './figures/percentiles_2.pdf')
 %% PLOT
 % Create tiled layout
-t = tiledlayout(2, 2, 'TileSpacing', 'compact', 'Padding', 'loose');
+figure('Units','inches', 'Position', [0 0 10 3]) % Ancho x Alto (8" x 3")
+
+% Configuración global de LaTeX
+set(0, 'defaultTextInterpreter', 'latex');
+set(0, 'defaultAxesTickLabelInterpreter', 'latex');
+set(0, 'defaultLegendInterpreter', 'latex');
+
+% Create tiled layout
+t = tiledlayout(1, 4, 'TileSpacing', 'compact', 'Padding', 'loose');
 
 % Add subplots
 for j = 1:length(beta)
@@ -49,7 +57,8 @@ for j = 1:length(beta)
     end
     xline(beta(j), '--r', 'LineWidth', 1, 'DisplayName', 'True value');
     ylabel('Densidad');
-    xlabel(sprintf('Valor estimado para \\beta_{%g}', j-1));
+    xlabel(sprintf('Valor estimado para $\\beta_{%d}$', j-1));
+    title(sprintf('$\\beta_{%d}$', j-1));
     grid on;
     hold off;
 end
@@ -58,13 +67,13 @@ end
 sgtitle("Distribuci\'{o}n de $\hat{\beta}$ variando $N$", 'Interpreter', 'latex', 'FontSize', 14);
 
 % Add legend below the plots
-hLegend = legend('show', 'NumColumns', 2);
+hLegend = legend('show', 'NumColumns', 4);
 hLegend.Layout.Tile = 'south';
 axis padded
 
 % Configure print settings
 set(gcf, 'PaperUnits', 'inches');
-set(gcf, 'PaperSize', [6, 5]); % Set paper size larger than figure
-set(gcf, 'PaperPosition', [0., 0., 6, 5]); % Add 
+set(gcf, 'PaperSize', [9, 3]); % Set paper size larger than figure
+set(gcf, 'PaperPosition', [0., 0., 9, 3]); % Add 
 print(gcf, '-dpdf', './figures/output_2.pdf');
 
