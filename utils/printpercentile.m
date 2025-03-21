@@ -1,4 +1,4 @@
-function printpercentile(percentiles, tag)
+function printpercentile(percentiles, tag, target)
     % PRINTPERCENTILE Display percentile information
     % labels are assumed to be correlated with the first axis
     % second and thrid axes are betas and percentile respectively
@@ -10,9 +10,48 @@ function printpercentile(percentiles, tag)
         T = table(beta_labels', p5, p95, 'VariableNames', columns);
         % Add header
         if exist('tag', 'var')
-            fprintf('\n=== %s ===\n', tag(i)); % Example header
+            display(tag(i)); % Example header
         end
         disp(T);
     end
+
+    param_labels = {'\beta_0', '\beta_1', '\beta_2', '\beta_3'};
+    % Create figure
+    figure('Position', [100, 100, 600, 400]);
+    % Plot for each parameter
+    for param_idx = 1:length(beta_labels)
+        subplot(2, 2, param_idx);
+        hold on;
+        
+        % Extract data for current parameter
+        param_data = squeeze(percentiles(:, param_idx, :)); % 3x2 matrix
+        
+        % Plot percentile ranges
+        for hp = 1:3
+            x = hp + [-0.2, 0.2];
+            y5 = [param_data(hp,1), param_data(hp,1)];
+            y95 = [param_data(hp,2), param_data(hp,2)];
+            plot(x, y5, 'b', 'LineWidth', 2);
+            plot(x, y95, 'r', 'LineWidth', 2);
+            plot([hp, hp], [y5(1), y95(1)], 'k-', 'LineWidth', 1);
+        end
+        
+        % Formatting
+        title(param_labels{param_idx});
+        xticks(1:3);
+        xticklabels(tag);
+        ylabel('Valor');
+        grid on;
+        ylim([min(param_data(:)) - 0.1, max(param_data(:)) + 0.1]);
+    end
+    % Add legend below the plots
+    lgd=legend('P5', 'P95', 'NumColumns', 2);
+    lgd.Position = [0.78, 0.9, 0.05, 0.05]; % [left, bottom, width, height]
+
+    sgtitle('Percentiles 5-95', 'Interpreter', 'latex');
+    set(gcf, 'PaperUnits', 'inches');
+    set(gcf, 'PaperSize', [6, 5]); % Set paper size larger than figure
+    set(gcf, 'PaperPosition', [0., 0., 6, 5]); % Add 
+    print(gcf, '-dpdf', target);
 end
 

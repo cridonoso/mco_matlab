@@ -22,8 +22,6 @@ for j=1:length(sigma_u)
         Y = X*beta' + U;
         
         % Beta parameter
-        %beta_hat = inv(X'*X)*X'Y % inneficient
-        %beta_hat = (X'*X) \ (X'*Y); % better but not enough
         beta_hat = X \ Y; % best
     
         beta_estimates(j, i, :) = beta_hat;
@@ -31,7 +29,8 @@ for j=1:length(sigma_u)
 end
 
 [beta_estimates, ptiles] = sort_percentile(beta_estimates);
-printpercentile(ptiles, ["sigma=1";"sigma=2";"sigma=10"])
+printpercentile(ptiles, ["\sigma_U^2=1", "\sigma_U^2=2", "\sigma_U^2=10"], ...
+    './figures/percentiles_1.pdf')
 %% PLOT
 % Create tiled layout
 t = tiledlayout(2, 2, 'TileSpacing', 'compact', 'Padding', 'loose');

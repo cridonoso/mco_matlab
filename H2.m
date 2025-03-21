@@ -32,7 +32,8 @@ for j=1:length(N_vector)
 end
 
 [beta_estimates, ptiles] = sort_percentile(beta_estimates);
-printpercentile(ptiles, ["N=50";"N=100";"N=500"])
+printpercentile(ptiles, ["N=50", "N=100", "N=500"], ...
+    './figures/percentiles_2.pdf')
 %% PLOT
 % Create tiled layout
 t = tiledlayout(2, 2, 'TileSpacing', 'compact', 'Padding', 'loose');
