@@ -1,36 +1,36 @@
 clearvars
 clc
 %% Question 2
-rng(42); % seed to reproduce same charts 
-addpath("utils") % add util functions
+rng(42); % Set seed to reproduce the same charts 
+addpath("utils") % Add utility functions
 
-N_vector = [50, 100, 500]; % sample sizes vector
-beta = [1, 2, 1,-1]; % beta coefs.
-sigma_e = 2; % variance for U
+N_vector = [50, 100, 500]; % Sample sizes vector
+beta = [1, 2, 1,-1]; % Beta coefficients
+sigma_e = 2; % Variance of U
 
 % Initialize estimation
 n_iter = 500;
 beta_estimates = zeros(length(N_vector), n_iter, length(beta));
 for j=1:length(N_vector)
     for i=1:n_iter
-        N = N_vector(j); % selecting current N size
+        N = N_vector(j); % Select current sample size
         
-        % Defining input matrix 
+        % Define input matrix
         X = generate_data(N, [0, 0, 0], [1, 2, 1]);
         U = sample_normal(N, 0, sigma_e);
         
-        % Target
+        % Calculate target variable
         Y = X*beta' + U;
         
-        % Beta parameter
-        %beta_hat = inv(X'*X)*X'Y % inneficient
-        %beta_hat = (X'*X) \ (X'*Y); % better but not enough
-        beta_hat = X \ Y; % best
-    
+        % Compute parameter estimates
+        beta_hat = X \ Y;
+        
+        % Store estimators
         beta_estimates(j, i, :) = beta_hat;
     end
 end
 
+%% PERCENTILE COMPUTATION AND VISUALIZACION
 [beta_estimates, ptiles] = sort_percentile(beta_estimates);
 printpercentile(ptiles, ["N=50", "N=100", "N=500"], ...
     './figures/percentiles_2.pdf')
@@ -62,6 +62,7 @@ hLegend = legend('show', 'NumColumns', 2);
 hLegend.Layout.Tile = 'south';
 axis padded
 
+% Configure print settings
 set(gcf, 'PaperUnits', 'inches');
 set(gcf, 'PaperSize', [6, 5]); % Set paper size larger than figure
 set(gcf, 'PaperPosition', [0., 0., 6, 5]); % Add 
