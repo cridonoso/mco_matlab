@@ -28,6 +28,7 @@ for j=1:length(sigma_u)
     end
 end
 
+%% CALCULATING PERCENTILE AND VISUALIZE THEM
 [beta_estimates, ptiles] = sort_percentile(beta_estimates);
 printpercentile(ptiles, ["\sigma_U^2=1", "\sigma_U^2=2", "\sigma_U^2=10"], ...
     './figures/percentiles_1.pdf')
