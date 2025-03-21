@@ -35,7 +35,7 @@ for j=1:length(lambda_v)
 end
 
 [beta_estimates, ptiles] = sort_percentile(beta_estimates);
-
+printpercentile(ptiles, ["lambda=0.1"; "lambda=0.5"; "lambda=5"])
 %% PLOT
 % Create tiled layout
 t = tiledlayout(2, 2, 'TileSpacing', 'compact', 'Padding', 'loose');
