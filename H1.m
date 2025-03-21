@@ -1,7 +1,7 @@
 clearvars
 clc
 %% Question 1
-rng(42); % seed to recall same charts 
+rng(42); % seed to reproduce same charts    
 addpath("utils") % add util functions
 
 N = 100; % sample size
